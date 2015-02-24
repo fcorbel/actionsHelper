@@ -1,0 +1,39 @@
+{
+  "name": "Vim",
+  "entries": [
+    {
+      "shortcut": "ciw",
+      "content": "Cut inner word."
+    },
+    {
+      "shortcut": "ci\"",
+      "content": "Cut inside quotes."
+    },
+    {
+      "shortcut": ":%s/foo/bar/g",
+      "content": "Find and replace in all lines."
+    },
+    {
+      "shortcut": ":s/foo/bar/g",
+      "content": "Find and replace in current line."
+    },
+    {
+      "shortcut": ":s/\\<foo\\>/bar/gc",
+      "content": "Find and replace only whole words maching exactly \"foo\" in current line with confirmation."
+    },
+    {
+      "shortcut": ":.,+2s/foo/bar/g",
+      "content": "Find and replace from the current line and the next 2 lines."
+    },
+    {
+      "shortcut": ":wa",
+      "content": "Save all buffers."
+    },
+    {
+      "shortcut": ":!python -m json.tool",
+      "content": "Pretty format of JSON data."
+    }
+
+  ] 
+
+}
