@@ -1,4 +1,4 @@
-#include "ncursesUI.h"
+#include <ncursesUI.h>
 #include <shortcutsHelper.h>
 
 #include <iostream>

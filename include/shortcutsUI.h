@@ -5,7 +5,6 @@
 #include <json/json.h>
 #include <iostream>
 
-// #include <shortcutsHelper.h>
 class ShortcutsHelper;
 
 class ShortcutsUI
@@ -21,6 +20,7 @@ class ShortcutsUI
 
   public:
 
+    virtual ~ShortcutsUI() {};
     virtual void startUI() = 0;
     virtual void stopUI() = 0;
     virtual void showEntries(const Json::Value entries) = 0;

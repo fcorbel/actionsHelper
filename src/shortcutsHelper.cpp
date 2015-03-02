@@ -20,7 +20,6 @@ ShortcutsHelper::ShortcutsHelper(ShortcutsUI* ui, std::string appName):
       std::cout << "Could not read file" << std::endl;
     }
   }
-  
   ui_->startUI();
 }
 
@@ -110,3 +109,8 @@ void ShortcutsHelper::processCmd(std::string cmd) {
   }
 }
 
+Json::Value ShortcutsHelper::getSearch(std::string search) {
+  Json::Value result;
+
+  return result;
+}

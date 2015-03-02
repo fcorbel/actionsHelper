@@ -27,6 +27,7 @@ class ShortcutsHelper
     bool findShortcutFile(std::string& result, const std::string appName);
     bool getAppList(ShortcutsInfos& result);
     void processCmd(std::string cmd);
+    Json::Value getSearch(std::string search);
 
 
 };
