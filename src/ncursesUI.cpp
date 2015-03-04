@@ -2,7 +2,8 @@
 #include <shortcutsHelper.h>
 
 #include <iostream>
-NcursesUI::NcursesUI():
+NcursesUI::NcursesUI(ShortcutsHelper &logic):
+  ShortcutsUI(logic),
   stop(false),
   inputHeight(3)
 {
@@ -17,8 +18,8 @@ void NcursesUI::startUI() {
   keypad(stdscr, true); // Enable arrows, F1, etc.
 
   drawUI();
-  showTitle(logic_->currentShortcuts.name);
-  showEntries(logic_->currentShortcuts.entries);
+  // showTitle(logic_->currentShortcuts.name);
+  // showEntries(logic_->currentShortcuts.entries);
 
   move(1, 11);
   while (!stop) {
@@ -32,7 +33,7 @@ void NcursesUI::startUI() {
         break;
       case '\n':
         if (cmdMode) {
-          logic_->processCmd(currentCmd);
+          // logic_.processCmd(currentCmd);
         }
         break;
       case KEY_BACKSPACE:
@@ -57,8 +58,8 @@ void NcursesUI::startUI() {
       case KEY_RESIZE:
         clear();
         drawUI();
-        showTitle(logic_->currentShortcuts.name);
-        showEntries(logic_->currentShortcuts.entries);
+        // showTitle(logic_->currentShortcuts.name);
+        // showEntries(logic_->currentShortcuts.entries);
         break;
       default:
         currentCmd += ch;

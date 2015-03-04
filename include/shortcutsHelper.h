@@ -2,33 +2,33 @@
 #define SHORTCUTSHELPER_H
 
 #include <string>
-#include <shortcutsUI.h>
 #include <utility>
 #include <json/json.h>
-
-typedef struct {
-  std::string name;
-  Json::Value entries;
-} ShortcutsInfos;
-
+#include <simstring/simstring.h>
 
 class ShortcutsHelper
 {
   private:
     const std::string AppListPath;
-    ShortcutsUI* ui_;
+
+    std::string loadedShortcutsName;
+    Json::Value loadedShortcutsEntries;
+    // simstring::writer_base<std::string> contentDb;
 
 
   public:
-    ShortcutsInfos currentShortcuts;
-
-    ShortcutsHelper(ShortcutsUI* ui, std::string appName="help");
-    bool getShortcutsForApp(ShortcutsInfos& result, const std::string fileName);
+    ShortcutsHelper(std::string appName="help");
+    bool loadShortcuts(const std::string appName);
     bool findShortcutFile(std::string& result, const std::string appName);
-    bool getAppList(ShortcutsInfos& result);
-    void processCmd(std::string cmd);
-    Json::Value getSearch(std::string search);
+    bool loadAppList();
+    bool processCmd(std::string cmd);
 
+    std::string getLoadedShortcutsName();
+    Json::Value getLoadedShortcutsEntries();
+    /*
+    void makeSearch(std::string search);
+    std::vector<std::string> retrieve(simstring::reader& dbr, const std::string& query, int measure, double threshold);
+*/
 
 };
 

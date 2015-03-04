@@ -24,6 +24,10 @@ Item {
       Layout.preferredHeight: 40
       focus: true
       onTextChanged: {
+        if (text[0] !== "/") {
+          // console.log("Make fuzzy search")
+          // qtCpp.makeSearch(text)
+        }
       }
       Keys.onReturnPressed: {
         if (text[0] === "/") {

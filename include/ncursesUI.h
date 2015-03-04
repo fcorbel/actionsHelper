@@ -10,15 +10,15 @@ class NcursesUI: public ShortcutsUI
 {
   private:
     bool stop;
+    int inputHeight;
     WINDOW* inputWin;
     WINDOW* inputWinBorder;
     WINDOW* titleWin;
     WINDOW* listWin;
     WINDOW* listWinBorder;
-    int inputHeight;
 
   public:
-    NcursesUI();
+    NcursesUI(ShortcutsHelper &logic);
     void startUI();
     void stopUI();
     void drawUI();

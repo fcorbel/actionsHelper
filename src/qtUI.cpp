@@ -12,7 +12,8 @@
 // QtUI
 /////////////////////////
 
-QtUI::QtUI(int &argc,char* argv[]):
+QtUI::QtUI(ShortcutsHelper &logic, int &argc,char* argv[]):
+  ShortcutsUI(logic),
   app(argc, argv),
   view(new QQuickView)
 {
@@ -28,19 +29,19 @@ void QtUI::startUI() {
   view->connect(view->engine(), SIGNAL(quit()), SLOT(close()));
   view->setResizeMode(QQuickView::SizeRootObjectToView);
 
-  showEntries(logic_->currentShortcuts.entries);
+  loadEntries(logic_.getLoadedShortcutsEntries());
   view->setSource(QUrl::fromLocalFile("../src/shortcutHelperQT.qml"));
 
   titleQML = view->rootObject()->findChild<QObject*>("titleEl");
-  if(titleQML == NULL) {
+  if (titleQML == NULL) {
       QMessageBox::warning(NULL, "Warning", "Failed to resolve title QML element");
   }
   inputQML = view->rootObject()->findChild<QObject*>("inputEl");
-if(inputQML == NULL) {
+  if (inputQML == NULL) {
       QMessageBox::warning(NULL, "Warning", "Failed to resolve title QML element");
   }
 
-  showTitle(logic_->currentShortcuts.name);
+  showTitle(logic_.getLoadedShortcutsName());
 
   view->show();
   app.exec();
@@ -50,11 +51,18 @@ void QtUI::stopUI() {
   app.quit();
 }
 
+void QtUI::showEntries() {
+  // Title
+
+  // Shortcuts
+
+}
+
 void QtUI::showTitle(std::string title) {
   titleQML->setProperty("text", title.c_str());
 }
 
-void QtUI::showEntries(const Json::Value entries) {
+void QtUI::loadEntries(const Json::Value entries) {
   QList<QObject*> dataList;
   for (unsigned i=0; i<entries.size(); ++i) {
     Json::Value entry = entries[i];
@@ -64,10 +72,24 @@ void QtUI::showEntries(const Json::Value entries) {
   ctxt->setContextProperty("shortcutsModel", QVariant::fromValue(dataList));
 }
 
-void QtUI::updateInput() {
-  inputQML->setProperty("text", currentCmd.c_str());
+// void QtUI::updateInput() {
+//   inputQML->setProperty("text", currentCmd.c_str());
+// }
+
+bool QtUI::processCmd(const QString &cmd) {
+  if (cmd == "/quit") {
+    stopUI();
+    return false;
+  }
+  if (logic_.processCmd(cmd.toStdString())) {
+    loadEntries(logic_.getLoadedShortcutsEntries());
+    showTitle(logic_.getLoadedShortcutsName());
+    inputQML->setProperty("text", "");
+    return true;
+  }
+  return false;
 }
 
-void QtUI::processCmd(const QString &cmd) {
-  logic_->processCmd(cmd.toStdString());
+void QtUI::makeSearch(const QString &cmd) {
+  // logic_.makeSearch(cmd.toStdString());
 }
