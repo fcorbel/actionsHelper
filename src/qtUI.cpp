@@ -30,7 +30,7 @@ void QtUI::startUI() {
   view->setResizeMode(QQuickView::SizeRootObjectToView);
 
   loadEntries(logic_.getLoadedShortcutsEntries());
-  view->setSource(QUrl::fromLocalFile("../src/shortcutHelperQT.qml"));
+  view->setSource(QUrl::fromLocalFile("../src/shortcutsHelperQT.qml"));
 
   titleQML = view->rootObject()->findChild<QObject*>("titleEl");
   if (titleQML == NULL) {
