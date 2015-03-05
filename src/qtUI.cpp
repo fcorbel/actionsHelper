@@ -41,7 +41,7 @@ void QtUI::startUI() {
       QMessageBox::warning(NULL, "Warning", "Failed to resolve title QML element");
   }
 
-  showTitle(logic_.getLoadedShortcutsName());
+  showTitle(logic_.getLoadedAppName());
 
   view->show();
   app.exec();
@@ -51,30 +51,19 @@ void QtUI::stopUI() {
   app.quit();
 }
 
-void QtUI::showEntries() {
-  // Title
-
-  // Shortcuts
-
-}
-
 void QtUI::showTitle(std::string title) {
   titleQML->setProperty("text", title.c_str());
 }
 
-void QtUI::loadEntries(const Json::Value entries) {
+void QtUI::loadEntries(const std::vector<Entry> entries) {
   QList<QObject*> dataList;
-  for (unsigned i=0; i<entries.size(); ++i) {
-    Json::Value entry = entries[i];
-    dataList.append(new DataObject(entry.get("shortcut", "").asCString(), entry.get("content", "").asCString()));
+  for (auto it=entries.begin(); it != entries.end(); ++it) {
+    Entry entry = *it;
+    dataList.append(new DataObject(QString::fromStdString(entry.shortcut), QString::fromStdString(entry.content)));
   }
   QQmlContext* ctxt = view->rootContext();
   ctxt->setContextProperty("shortcutsModel", QVariant::fromValue(dataList));
 }
-
-// void QtUI::updateInput() {
-//   inputQML->setProperty("text", currentCmd.c_str());
-// }
 
 bool QtUI::processCmd(const QString &cmd) {
   if (cmd == "/quit") {
@@ -83,13 +72,20 @@ bool QtUI::processCmd(const QString &cmd) {
   }
   if (logic_.processCmd(cmd.toStdString())) {
     loadEntries(logic_.getLoadedShortcutsEntries());
-    showTitle(logic_.getLoadedShortcutsName());
+    showTitle(logic_.getLoadedAppName());
     inputQML->setProperty("text", "");
     return true;
   }
   return false;
 }
 
-void QtUI::makeSearch(const QString &cmd) {
-  // logic_.makeSearch(cmd.toStdString());
+void QtUI::makeSearch(const QString &search, const QString &measure, const double &threshold) {
+  auto result = logic_.makeSearch(search.toStdString(), measure.toStdString(), threshold);
+  if (result.size() > 0) {
+    std::cout << "[" << std::endl;
+    for (int i = 0;i < (int)result.size();++i) {
+        std::cout << result[i] << std::endl;
+    }
+    std::cout << "]" << std::endl;
+  }
 }

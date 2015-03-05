@@ -24,12 +24,10 @@ class QtUI:  public QObject, public ShortcutsUI
     void startUI();
     void startUI(int &argc,char* argv[]);
     void stopUI();
-    void showEntries();
     void showTitle(std::string title);
-    void loadEntries(const Json::Value entries);
-    // void updateInput();
+    void loadEntries(const std::vector<Entry> entries);
     Q_INVOKABLE bool processCmd(const QString &cmd);
-    Q_INVOKABLE void makeSearch(const QString &src);
+    Q_INVOKABLE void makeSearch(const QString &src, const QString &measure="cosine", const double &threshold=0);
 
 };
 

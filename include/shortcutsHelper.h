@@ -2,19 +2,25 @@
 #define SHORTCUTSHELPER_H
 
 #include <string>
+#include <vector>
 #include <utility>
 #include <json/json.h>
 #include <simstring/simstring.h>
+
+typedef struct {
+  std::string shortcut;
+  std::string content;
+} Entry;
+
+// typedef simstring::cosine cosineSS;
 
 class ShortcutsHelper
 {
   private:
     const std::string AppListPath;
 
-    std::string loadedShortcutsName;
-    Json::Value loadedShortcutsEntries;
-    // simstring::writer_base<std::string> contentDb;
-
+    std::string loadedAppName;
+    std::vector<Entry> loadedShortcutsEntries;
 
   public:
     ShortcutsHelper(std::string appName="help");
@@ -22,13 +28,14 @@ class ShortcutsHelper
     bool findShortcutFile(std::string& result, const std::string appName);
     bool loadAppList();
     bool processCmd(std::string cmd);
+    bool hasDb();
+    bool createDb();
+    std::vector<std::string> makeSearch(std::string search,std::string measure="cosine", double threshold=0.1);
 
-    std::string getLoadedShortcutsName();
-    Json::Value getLoadedShortcutsEntries();
-    /*
-    void makeSearch(std::string search);
-    std::vector<std::string> retrieve(simstring::reader& dbr, const std::string& query, int measure, double threshold);
-*/
+    std::string getLoadedAppName();
+    std::vector<Entry> getLoadedShortcutsEntries();
+    
+
 
 };
 

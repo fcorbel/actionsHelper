@@ -26,7 +26,7 @@ Item {
       onTextChanged: {
         if (text[0] !== "/") {
           // console.log("Make fuzzy search")
-          // qtCpp.makeSearch(text)
+          qtCpp.makeSearch(text, "cosine", 0.1)
         }
       }
       Keys.onReturnPressed: {
