@@ -91,9 +91,58 @@ bool ShortcutsHelper::processCmd(std::string cmd) {
   cmd.erase(0, 1); // erase "/"
   if (cmd == "list") {
     return loadAppList();
-  } else {
-    return loadShortcuts(cmd);
   }
+  if (cmd.substr(0, 4) == "add ") {
+    auto first = cmd.find_first_of("\"\'"); 
+    auto second = cmd.find_first_of("\"\'", first+1); 
+    Entry newEntry;
+    newEntry.shortcut = cmd.substr(first+1, second-first-1);
+    first = cmd.find_first_of("\"\'", second+1); 
+    second = cmd.find_first_of("\"\'", first+1); 
+    newEntry.content = cmd.substr(first+1, second-first-1);
+    return addEntry(newEntry);
+  }
+  return loadShortcuts(cmd);
+}
+
+bool ShortcutsHelper::addEntry(Entry newEntry) {
+  std::cout << "Try to add a new entry: " << newEntry.shortcut << " => " << newEntry.content << std::endl;
+  if (newEntry.shortcut.size() == 0) {
+    return false;
+  }
+  // Add to file
+  std::string fileName;
+  if (!findShortcutFile(fileName, loadedAppName)) {
+    return false;
+  }
+  std::ifstream prevFile(fileName);
+  if (file.is_open()) {
+    Json::Value root;
+    Json::Reader reader;
+    std::ifstream stream(fileName.c_str(), std::ifstream::binary);
+    if (!reader.parse(stream, root, false)) {
+      std::cout << reader.getFormatedErrorMessages() << std::endl;
+      return false;
+    }
+    Json::Value jsonEntry(Json::objectValue);
+    jsonEntry["shortcut"] = newEntry.shortcut;
+    jsonEntry["content"] = newEntry.content;
+    root["entries"].append(jsonEntry);
+    std::cout << "This is the root" << root;
+    // file << root;
+    file.close();
+  }
+
+  Json::Value root;
+  Json::Reader reader;
+  std::ifstream stream(fileName.c_str(), std::ifstream::binary);
+  if (!reader.parse(stream, root, false)) {
+    std::cout << reader.getFormatedErrorMessages() << std::endl;
+    return false;
+  }
+
+  // loadedShortcutsEntries.push_back(newEntry);
+  return true;
 }
 
 bool ShortcutsHelper::hasDb() {

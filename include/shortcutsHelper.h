@@ -28,6 +28,7 @@ class ShortcutsHelper
     bool findShortcutFile(std::string& result, const std::string appName);
     bool loadAppList();
     bool processCmd(std::string cmd);
+    bool addEntry(Entry newEntry);
     bool hasDb();
     bool createDb();
     std::vector<std::string> makeSearch(std::string search,std::string measure="cosine", double threshold=0.1);
