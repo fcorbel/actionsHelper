@@ -115,24 +115,7 @@ bool ShortcutsHelper::addEntry(Entry newEntry) {
   if (!findShortcutFile(fileName, loadedAppName)) {
     return false;
   }
-  std::ifstream prevFile(fileName);
-  if (file.is_open()) {
-    Json::Value root;
-    Json::Reader reader;
-    std::ifstream stream(fileName.c_str(), std::ifstream::binary);
-    if (!reader.parse(stream, root, false)) {
-      std::cout << reader.getFormatedErrorMessages() << std::endl;
-      return false;
-    }
-    Json::Value jsonEntry(Json::objectValue);
-    jsonEntry["shortcut"] = newEntry.shortcut;
-    jsonEntry["content"] = newEntry.content;
-    root["entries"].append(jsonEntry);
-    std::cout << "This is the root" << root;
-    // file << root;
-    file.close();
-  }
-
+  // Read previous content
   Json::Value root;
   Json::Reader reader;
   std::ifstream stream(fileName.c_str(), std::ifstream::binary);
@@ -140,8 +123,18 @@ bool ShortcutsHelper::addEntry(Entry newEntry) {
     std::cout << reader.getFormatedErrorMessages() << std::endl;
     return false;
   }
+  Json::Value jsonEntry(Json::objectValue);
+  jsonEntry["shortcut"] = newEntry.shortcut;
+  jsonEntry["content"] = newEntry.content;
+  root["entries"].append(jsonEntry);
+  // Rewrite file
+  std::ofstream file(fileName);
+  if (file.is_open()) {
+    file << root;
+    file.close();
+  }
 
-  // loadedShortcutsEntries.push_back(newEntry);
+  loadShortcuts(loadedAppName);
   return true;
 }
 

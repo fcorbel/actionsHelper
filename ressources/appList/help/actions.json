@@ -1,0 +1,30 @@
+{
+	"entries" : 
+	[
+		{
+			"content" : "Display this list of commands.",
+			"shortcut" : "/help"
+		},
+		{
+			"content" : "Exit the shortcut helper application.",
+			"shortcut" : "/quit"
+		},
+		{
+			"content" : "Try to load the shortcut list for application named XXX.",
+			"shortcut" : "/XXX"
+		},
+		{
+			"content" : "List the name of all supported applications",
+			"shortcut" : "/list"
+		},
+		{
+			"content" : "Add a new entry for the current application.",
+			"shortcut" : "/add \"SHORTCUT\" \"DESCRIPTION\""
+		},
+		{
+			"content" : "Delete an entry in the current application. TODO",
+			"shortcut" : "/delete \"SHORTCUT\""
+		}
+	],
+	"name" : "Help"
+}
