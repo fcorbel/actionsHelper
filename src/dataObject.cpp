@@ -6,18 +6,18 @@ DataObject::DataObject(QObject *parent)
 {
 }
 
-DataObject::DataObject(const QString &shct, const QString &cont, QObject *parent)
-    : QObject(parent), shortcut_(shct), content_(cont)
+DataObject::DataObject(const QString &action, const QString &desc, QObject *parent)
+    : QObject(parent), action_(action), description_(desc)
 {
 }
 
-QString DataObject::shortcut() const
+QString DataObject::action() const
 {
-    return shortcut_;
+    return action_;
 }
 
-QString DataObject::content() const
+QString DataObject::description() const
 {
-    return content_;
+    return description_;
 }
 

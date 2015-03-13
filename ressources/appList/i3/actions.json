@@ -2,8 +2,8 @@
   "name": "i3wm",
   "entries": [
     {
-      "shortcut": "",
-      "content": ""
+      "action": "",
+      "description": ""
     }
   ]
 }

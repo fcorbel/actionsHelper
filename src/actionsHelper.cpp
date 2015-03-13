@@ -1,4 +1,4 @@
-#include <shortcutsHelper.h>
+#include <actionsHelper.h>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -8,18 +8,17 @@
 #include <iterator>
 
 
-ShortcutsHelper::ShortcutsHelper(std::string appName): 
+ActionsHelper::ActionsHelper(std::string appName): 
   AppListPath("../ressources/appList"),
   loadedAppName(""),
-  loadedShortcutsEntries()
-  // contentDb(nullptr)
+  loadedEntries()
 {
-  loadShortcuts(appName);
+  loadEntries(appName);
 }
 
-bool ShortcutsHelper::loadShortcuts(const std::string appName) {
+bool ActionsHelper::loadEntries(const std::string appName) {
   std::string fileName;
-  if (!findShortcutFile(fileName, appName)) {
+  if (!findEntriesFile(fileName, appName)) {
     return false;
   }
   // std::cout << "Try to open file at: " << fileName << std::endl;
@@ -36,18 +35,18 @@ bool ShortcutsHelper::loadShortcuts(const std::string appName) {
   for (unsigned i=0; i<entriesJson.size(); ++i) {
     Json::Value entryJson = entriesJson[i];
     Entry entry;
-    entry.shortcut = entryJson.get("shortcut", "").asCString();
-    entry.content = entryJson.get("content", "").asCString();
+    entry.action = entryJson.get("action", "").asCString();
+    entry.description = entryJson.get("description", "").asCString();
     newEntries.push_back(entry);
   }
-  loadedShortcutsEntries = newEntries;
+  loadedEntries = newEntries;
   if (!hasDb()) {
     createDb();
   }
   return true;
 }
 
-bool ShortcutsHelper::findShortcutFile(std::string& result, const std::string appName) {
+bool ActionsHelper::findEntriesFile(std::string& result, const std::string appName) {
   // std::cout << "Search application list in: " << AppListPath << std::endl;
   //TODO search in all folders for a file "appName.txt" -> check if appName is in it
   std::string fileName;
@@ -61,33 +60,32 @@ bool ShortcutsHelper::findShortcutFile(std::string& result, const std::string ap
   }
 }
 
-bool ShortcutsHelper::loadAppList() {
+bool ActionsHelper::loadAppList() {
   // Open and list files
   DIR* dir;
   if ((dir = opendir(AppListPath.c_str())) == NULL) {
     return false;
   }
-  std::string appName = "Applications list";
   std::vector<Entry> entries;
-  // Json::Value entries(Json::arrayValue);
   dirent* ent;
   while ((ent = readdir(dir)) != NULL) {
     char* name = ent->d_name;
+    std::cout << name << std::endl;
     if ((strcmp(name, ".") != 0) && (strcmp(name, "..") != 0) && (name[0] != '.')) {
       Entry entry;
-      entry.shortcut = name;
-      entry.content = "";
+      entry.action = name;
+      entry.description = "";
       entries.push_back(entry);
     }
   }
   closedir(dir);
-  loadedAppName = appName;
-  loadedShortcutsEntries = entries;
+  loadedAppName = "Applications list";
+  loadedEntries = entries;
   return true;
 }
 
 //return true if GUI needs to refresh
-bool ShortcutsHelper::processCmd(std::string cmd) {
+bool ActionsHelper::processCmd(std::string cmd) {
   cmd.erase(0, 1); // erase "/"
   if (cmd == "list") {
     return loadAppList();
@@ -96,23 +94,23 @@ bool ShortcutsHelper::processCmd(std::string cmd) {
     auto first = cmd.find_first_of("\"\'"); 
     auto second = cmd.find_first_of("\"\'", first+1); 
     Entry newEntry;
-    newEntry.shortcut = cmd.substr(first+1, second-first-1);
+    newEntry.action = cmd.substr(first+1, second-first-1);
     first = cmd.find_first_of("\"\'", second+1); 
     second = cmd.find_first_of("\"\'", first+1); 
-    newEntry.content = cmd.substr(first+1, second-first-1);
+    newEntry.description = cmd.substr(first+1, second-first-1);
     return addEntry(newEntry);
   }
-  return loadShortcuts(cmd);
+  return loadEntries(cmd);
 }
 
-bool ShortcutsHelper::addEntry(Entry newEntry) {
-  std::cout << "Try to add a new entry: " << newEntry.shortcut << " => " << newEntry.content << std::endl;
-  if (newEntry.shortcut.size() == 0) {
+bool ActionsHelper::addEntry(Entry newEntry) {
+  std::cout << "Try to add a new entry: " << newEntry.action << " => " << newEntry.description << std::endl;
+  if (newEntry.action.size() == 0) {
     return false;
   }
   // Add to file
   std::string fileName;
-  if (!findShortcutFile(fileName, loadedAppName)) {
+  if (!findEntriesFile(fileName, loadedAppName)) {
     return false;
   }
   // Read previous content
@@ -124,8 +122,8 @@ bool ShortcutsHelper::addEntry(Entry newEntry) {
     return false;
   }
   Json::Value jsonEntry(Json::objectValue);
-  jsonEntry["shortcut"] = newEntry.shortcut;
-  jsonEntry["content"] = newEntry.content;
+  jsonEntry["action"] = newEntry.action;
+  jsonEntry["description"] = newEntry.description;
   root["entries"].append(jsonEntry);
   // Rewrite file
   std::ofstream file(fileName);
@@ -134,11 +132,11 @@ bool ShortcutsHelper::addEntry(Entry newEntry) {
     file.close();
   }
 
-  loadShortcuts(loadedAppName);
+  loadEntries(loadedAppName);
   return true;
 }
 
-bool ShortcutsHelper::hasDb() {
+bool ActionsHelper::hasDb() {
   std::string fileName(AppListPath +"/"+loadedAppName+"/database.db");
   if (std::ifstream(fileName.c_str())) {
     return true;
@@ -147,15 +145,15 @@ bool ShortcutsHelper::hasDb() {
   }
 }
 
-bool ShortcutsHelper::createDb() {
+bool ActionsHelper::createDb() {
   //Fill Database
   simstring::ngram_generator gen(3, false);
   std::string fileName(AppListPath +"/"+loadedAppName+"/database.db");
   std::cout << "Create database at: " << fileName << std::endl;
   auto db = new simstring::writer_base<std::string>(gen, fileName);
-  for (auto it=loadedShortcutsEntries.begin(); it != loadedShortcutsEntries.end(); ++it) {
+  for (auto it=loadedEntries.begin(); it != loadedEntries.end(); ++it) {
     Entry entry = *it;
-    std::string content = entry.content;
+    std::string content = entry.description;
     if (content.size() > 0) {
       db->insert(content);
     }
@@ -164,7 +162,7 @@ bool ShortcutsHelper::createDb() {
   return true;
 }
 
-std::vector<std::string> ShortcutsHelper::makeSearch(std::string search, std::string measure, double threshold) {
+std::vector<std::string> ActionsHelper::makeSearch(std::string search, std::string measure, double threshold) {
   std::cout << "Make search with mesure=" << measure << " and threshold=" <<threshold << std::endl;
   // Open the database for reading.
   simstring::reader dbr;
@@ -194,11 +192,11 @@ std::vector<std::string> ShortcutsHelper::makeSearch(std::string search, std::st
   return result;
 }
 
-std::string ShortcutsHelper::getLoadedAppName() {
+std::string ActionsHelper::getLoadedAppName() {
   return loadedAppName;
 }
 
-std::vector<Entry> ShortcutsHelper::getLoadedShortcutsEntries() {
-  return loadedShortcutsEntries;
+std::vector<Entry> ActionsHelper::getLoadedEntries() {
+  return loadedEntries;
 }
 

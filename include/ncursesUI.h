@@ -1,12 +1,12 @@
 #ifndef NCURSESUI_H
 #define NCURSESUI_H
 
-#include <shortcutsUI.h>
+#include <actionsHelperUI.h>
 #include <string>
 #include <ncurses.h>
 #include <json/json.h>
 
-class NcursesUI: public ShortcutsUI
+class NcursesUI: public ActionsHelperUI
 {
   private:
     bool stop;
@@ -18,7 +18,7 @@ class NcursesUI: public ShortcutsUI
     WINDOW* listWinBorder;
 
   public:
-    NcursesUI(ShortcutsHelper &logic);
+    NcursesUI(ActionsHelper &logic);
     void startUI();
     void stopUI();
     void drawUI();

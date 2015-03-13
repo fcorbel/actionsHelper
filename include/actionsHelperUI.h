@@ -1,24 +1,24 @@
-#ifndef SHORTCUTSUI_H
-#define SHORTCUTSUI_H
+#ifndef ACTIONSHELPERUI_H
+#define ACTIONSHELPERUI_H
 
-#include <shortcutsHelper.h>
+#include <actionsHelper.h>
 #include <string>
 #include <iostream>
 
-class ShortcutsUI
+class ActionsHelperUI
 {
   private:
 
   protected:
-    ShortcutsHelper& logic_;
+    ActionsHelper& logic_;
     std::string currentCmd;
     bool cmdMode;
 
-    ShortcutsUI(ShortcutsHelper& logic): logic_(logic), currentCmd(""), cmdMode(false) {}
+    ActionsHelperUI(ActionsHelper& logic): logic_(logic), currentCmd(""), cmdMode(false) {}
 
   public:
 
-    virtual ~ShortcutsUI() {};
+    virtual ~ActionsHelperUI() {};
     virtual void startUI() = 0;
     virtual void stopUI() = 0;
     // virtual void showEntries(const Json::Value entries) = 0;

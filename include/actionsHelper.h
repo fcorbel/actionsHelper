@@ -1,5 +1,5 @@
-#ifndef SHORTCUTSHELPER_H
-#define SHORTCUTSHELPER_H
+#ifndef ACTIONSHELPER_H
+#define ACTIONSHELPER_H
 
 #include <string>
 #include <vector>
@@ -8,24 +8,24 @@
 #include <simstring/simstring.h>
 
 typedef struct {
-  std::string shortcut;
-  std::string content;
+  std::string action;
+  std::string description;
 } Entry;
 
 // typedef simstring::cosine cosineSS;
 
-class ShortcutsHelper
+class ActionsHelper
 {
   private:
     const std::string AppListPath;
 
     std::string loadedAppName;
-    std::vector<Entry> loadedShortcutsEntries;
+    std::vector<Entry> loadedEntries;
 
   public:
-    ShortcutsHelper(std::string appName="help");
-    bool loadShortcuts(const std::string appName);
-    bool findShortcutFile(std::string& result, const std::string appName);
+    ActionsHelper(std::string appName="help");
+    bool loadEntries(const std::string appName);
+    bool findEntriesFile(std::string& result, const std::string appName);
     bool loadAppList();
     bool processCmd(std::string cmd);
     bool addEntry(Entry newEntry);
@@ -34,7 +34,7 @@ class ShortcutsHelper
     std::vector<std::string> makeSearch(std::string search,std::string measure="cosine", double threshold=0.1);
 
     std::string getLoadedAppName();
-    std::vector<Entry> getLoadedShortcutsEntries();
+    std::vector<Entry> getLoadedEntries();
     
 
 

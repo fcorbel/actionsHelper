@@ -55,17 +55,17 @@ Item {
         height: 60
         /*color: "green"*/
         Text {
-          id: shortcutText
-          text: shortcut
+          id: actionText
+          text: action
           font.weight: Font.Bold
           font.pixelSize: 20
         }
         Text {
-          anchors.top: shortcutText.bottom
+          anchors.top: actionText.bottom
           anchors.left: parent.left
           anchors.leftMargin: 60
           width: parent.width - anchors.leftMargin
-          text: content
+          text: description
           wrapMode: Text.WordWrap
         }
       }
@@ -79,7 +79,7 @@ Item {
           id: "list"
           spacing: 5
           anchors.fill: parent
-          model: shortcutsModel
+          model: entriesModel
           delegate: delegate
           highlight: highlight
           focus: true

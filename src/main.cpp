@@ -1,4 +1,4 @@
-#include <shortcutsHelper.h>
+#include <actionsHelper.h>
 #include <ncursesUI.h>
 #include <qtUI.h>
 
@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
   // QtUI ui(argc, argv);
   // ShortcutsHelper helper(&ui);
 
-  ShortcutsHelper helper;
+  ActionsHelper helper;
   QtUI ui(helper, argc, argv);
   ui.startUI();
 

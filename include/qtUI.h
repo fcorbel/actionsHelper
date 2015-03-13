@@ -1,7 +1,7 @@
 #ifndef QTUI_H
 #define QTUI_H
 
-#include <shortcutsUI.h>
+#include <actionsHelperUI.h>
 #include <string>
 #include <json/json.h>
 #include <QApplication>
@@ -9,7 +9,7 @@
 
 class QQuickView; //Because weird error when putting include here
 
-class QtUI:  public QObject, public ShortcutsUI
+class QtUI:  public QObject, public ActionsHelperUI
 {
   Q_OBJECT
   private:
@@ -19,7 +19,7 @@ class QtUI:  public QObject, public ShortcutsUI
     QObject* inputQML;
 
   public:
-    QtUI(ShortcutsHelper &logic, int &argc,char* argv[]);
+    QtUI(ActionsHelper &logic, int &argc,char* argv[]);
     ~QtUI();
     void startUI();
     void startUI(int &argc,char* argv[]);

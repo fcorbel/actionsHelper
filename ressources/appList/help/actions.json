@@ -2,28 +2,28 @@
 	"entries" : 
 	[
 		{
-			"content" : "Display this list of commands.",
-			"shortcut" : "/help"
+			"description" : "Display this list of commands.",
+			"action" : "/help"
 		},
 		{
-			"content" : "Exit the shortcut helper application.",
-			"shortcut" : "/quit"
+			"description" : "Exit the action helper application.",
+			"action" : "/quit"
 		},
 		{
-			"content" : "Try to load the shortcut list for application named XXX.",
-			"shortcut" : "/XXX"
+			"description" : "Try to load the action list for application named XXX.",
+			"action" : "/XXX"
 		},
 		{
-			"content" : "List the name of all supported applications",
-			"shortcut" : "/list"
+			"description" : "List the name of all supported applications",
+			"action" : "/list"
 		},
 		{
-			"content" : "Add a new entry for the current application.",
-			"shortcut" : "/add \"SHORTCUT\" \"DESCRIPTION\""
+			"description" : "Add a new entry for the current application.",
+			"action" : "/add \"action\" \"DESCRIPTION\""
 		},
 		{
-			"content" : "Delete an entry in the current application. TODO",
-			"shortcut" : "/delete \"SHORTCUT\""
+			"description" : "Delete an entry in the current application. TODO",
+			"action" : "/delete \"action\""
 		}
 	],
 	"name" : "Help"

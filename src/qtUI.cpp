@@ -1,5 +1,5 @@
 #include <qtUI.h>
-#include <shortcutsHelper.h>
+#include <actionsHelper.h>
 #include <QtQml/QQmlEngine>
 #include <iostream>
 #include <QQuickView>
@@ -12,8 +12,8 @@
 // QtUI
 /////////////////////////
 
-QtUI::QtUI(ShortcutsHelper &logic, int &argc,char* argv[]):
-  ShortcutsUI(logic),
+QtUI::QtUI(ActionsHelper &logic, int &argc,char* argv[]):
+  ActionsHelperUI(logic),
   app(argc, argv),
   view(new QQuickView)
 {
@@ -29,8 +29,8 @@ void QtUI::startUI() {
   view->connect(view->engine(), SIGNAL(quit()), SLOT(close()));
   view->setResizeMode(QQuickView::SizeRootObjectToView);
 
-  loadEntries(logic_.getLoadedShortcutsEntries());
-  view->setSource(QUrl::fromLocalFile("../src/shortcutsHelperQT.qml"));
+  loadEntries(logic_.getLoadedEntries());
+  view->setSource(QUrl::fromLocalFile("../src/actionsHelperQT.qml"));
 
   titleQML = view->rootObject()->findChild<QObject*>("titleEl");
   if (titleQML == NULL) {
@@ -59,10 +59,10 @@ void QtUI::loadEntries(const std::vector<Entry> entries) {
   QList<QObject*> dataList;
   for (auto it=entries.begin(); it != entries.end(); ++it) {
     Entry entry = *it;
-    dataList.append(new DataObject(QString::fromStdString(entry.shortcut), QString::fromStdString(entry.content)));
+    dataList.append(new DataObject(QString::fromStdString(entry.action), QString::fromStdString(entry.description)));
   }
   QQmlContext* ctxt = view->rootContext();
-  ctxt->setContextProperty("shortcutsModel", QVariant::fromValue(dataList));
+  ctxt->setContextProperty("entriesModel", QVariant::fromValue(dataList));
 }
 
 bool QtUI::processCmd(const QString &cmd) {
@@ -71,7 +71,7 @@ bool QtUI::processCmd(const QString &cmd) {
     return false;
   }
   if (logic_.processCmd(cmd.toStdString())) {
-    loadEntries(logic_.getLoadedShortcutsEntries());
+    loadEntries(logic_.getLoadedEntries());
     showTitle(logic_.getLoadedAppName());
     inputQML->setProperty("text", "");
     return true;

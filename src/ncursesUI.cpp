@@ -1,9 +1,9 @@
 #include <ncursesUI.h>
-#include <shortcutsHelper.h>
+#include <actionsHelper.h>
 
 #include <iostream>
-NcursesUI::NcursesUI(ShortcutsHelper &logic):
-  ShortcutsUI(logic),
+NcursesUI::NcursesUI(ActionsHelper &logic):
+  ActionsHelperUI(logic),
   stop(false),
   inputHeight(3)
 {
