@@ -10,17 +10,17 @@
 
 ActionsHelper::ActionsHelper(std::string appName): 
   AppListPath("../ressources/appList"),
-  loadedAppName(""),
+  loadedAppPath(""),
+  loadedAppTitle(""),
   loadedEntries()
 {
-  loadEntries(appName);
+  if (findAppFolder(loadedAppPath, appName)) {
+    loadEntries(loadedAppPath);
+  }
 }
 
-bool ActionsHelper::loadEntries(const std::string appName) {
-  std::string fileName;
-  if (!findEntriesFile(fileName, appName)) {
-    return false;
-  }
+bool ActionsHelper::loadEntries(const std::string appPath) {
+  std::string fileName = appPath+"/actions.json";
   // std::cout << "Try to open file at: " << fileName << std::endl;
   Json::Value root;
   Json::Reader reader;
@@ -29,7 +29,7 @@ bool ActionsHelper::loadEntries(const std::string appName) {
     std::cout << reader.getFormatedErrorMessages() << std::endl;
     return false;
   }
-  loadedAppName = appName;
+  loadedAppTitle = root["name"].asCString();
   std::vector<Entry> newEntries;
   Json::Value entriesJson = root["entries"];
   for (unsigned i=0; i<entriesJson.size(); ++i) {
@@ -46,11 +46,11 @@ bool ActionsHelper::loadEntries(const std::string appName) {
   return true;
 }
 
-bool ActionsHelper::findEntriesFile(std::string& result, const std::string appName) {
+bool ActionsHelper::findAppFolder(std::string& result, const std::string appName) {
   // std::cout << "Search application list in: " << AppListPath << std::endl;
   //TODO search in all folders for a file "appName.txt" -> check if appName is in it
   std::string fileName;
-  fileName = AppListPath +"/"+appName+"/actions.json";
+  fileName = AppListPath +"/"+appName;
   if (std::ifstream(fileName.c_str())) {
     result = fileName;
     return true;
@@ -79,7 +79,7 @@ bool ActionsHelper::loadAppList() {
     }
   }
   closedir(dir);
-  loadedAppName = "Applications list";
+  loadedAppTitle = "Applications list";
   loadedEntries = entries;
   return true;
 }
@@ -100,7 +100,11 @@ bool ActionsHelper::processCmd(std::string cmd) {
     newEntry.description = cmd.substr(first+1, second-first-1);
     return addEntry(newEntry);
   }
-  return loadEntries(cmd);
+  if (findAppFolder(loadedAppPath, cmd)) {
+    return loadEntries(loadedAppPath);
+  } else {
+    return NULL;
+  }
 }
 
 bool ActionsHelper::addEntry(Entry newEntry) {
@@ -109,10 +113,7 @@ bool ActionsHelper::addEntry(Entry newEntry) {
     return false;
   }
   // Add to file
-  std::string fileName;
-  if (!findEntriesFile(fileName, loadedAppName)) {
-    return false;
-  }
+  std::string fileName = loadedAppPath + "/actions.json";
   // Read previous content
   Json::Value root;
   Json::Reader reader;
@@ -132,12 +133,12 @@ bool ActionsHelper::addEntry(Entry newEntry) {
     file.close();
   }
 
-  loadEntries(loadedAppName);
+  loadEntries(loadedAppPath);
   return true;
 }
 
 bool ActionsHelper::hasDb() {
-  std::string fileName(AppListPath +"/"+loadedAppName+"/database.db");
+  std::string fileName(loadedAppPath+"/database.db");
   if (std::ifstream(fileName.c_str())) {
     return true;
   } else {
@@ -148,7 +149,7 @@ bool ActionsHelper::hasDb() {
 bool ActionsHelper::createDb() {
   //Fill Database
   simstring::ngram_generator gen(3, false);
-  std::string fileName(AppListPath +"/"+loadedAppName+"/database.db");
+  std::string fileName(loadedAppPath+"/database.db");
   std::cout << "Create database at: " << fileName << std::endl;
   auto db = new simstring::writer_base<std::string>(gen, fileName);
   for (auto it=loadedEntries.begin(); it != loadedEntries.end(); ++it) {
@@ -166,7 +167,7 @@ std::vector<std::string> ActionsHelper::makeSearch(std::string search, std::stri
   std::cout << "Make search with mesure=" << measure << " and threshold=" <<threshold << std::endl;
   // Open the database for reading.
   simstring::reader dbr;
-  std::string fileName(AppListPath +"/"+loadedAppName+"/database.db");
+  std::string fileName(loadedAppPath+"/database.db");
   if (!dbr.open(fileName)) {
     std::cerr << "Could not open file";
     return std::vector<std::string>();
@@ -192,8 +193,8 @@ std::vector<std::string> ActionsHelper::makeSearch(std::string search, std::stri
   return result;
 }
 
-std::string ActionsHelper::getLoadedAppName() {
-  return loadedAppName;
+std::string ActionsHelper::getLoadedAppTitle() {
+  return loadedAppTitle;
 }
 
 std::vector<Entry> ActionsHelper::getLoadedEntries() {

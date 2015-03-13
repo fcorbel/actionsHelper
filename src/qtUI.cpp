@@ -41,7 +41,7 @@ void QtUI::startUI() {
       QMessageBox::warning(NULL, "Warning", "Failed to resolve title QML element");
   }
 
-  showTitle(logic_.getLoadedAppName());
+  showTitle(logic_.getLoadedAppTitle());
 
   view->show();
   app.exec();
@@ -72,7 +72,7 @@ bool QtUI::processCmd(const QString &cmd) {
   }
   if (logic_.processCmd(cmd.toStdString())) {
     loadEntries(logic_.getLoadedEntries());
-    showTitle(logic_.getLoadedAppName());
+    showTitle(logic_.getLoadedAppTitle());
     inputQML->setProperty("text", "");
     return true;
   }
