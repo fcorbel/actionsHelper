@@ -79,8 +79,10 @@ bool ActionsHelper::loadAppList() {
     }
   }
   closedir(dir);
+  loadedAppPath = AppListPath;
   loadedAppTitle = "Applications list";
   loadedEntries = entries;
+  createDb();
   return true;
 }
 
