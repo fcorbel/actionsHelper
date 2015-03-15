@@ -1,10 +1,42 @@
 {
-  "name": "i3wm",
-  "entries": [
-    {
-      "action": "",
-      "description": ""
-    }
-  ]
+	"entries" : 
+	[
+		{
+			"action" : "Mod+Enter",
+			"description" : "Open a new terminal window."
+		},
+		{
+			"action" : "Mod+v",
+			"description" : "Split a window vertically"
+		},
+		{
+			"action" : "Mod+h",
+			"description" : "Split a window horizontally"
+		},
+		{
+			"action" : "Mod+e",
+			"description" : "Toggles layout mode between vertical and horizontal."
+		},
+		{
+			"action" : "Mod+s",
+			"description" : "Set layout mode to stacking."
+		},
+		{
+			"action" : "Mod+w",
+			"description" : "Set layout mode to tabbed."
+		},
+		{
+			"action" : "Mod+f",
+			"description" : "Toggle fullscreen mode."
+		},
+		{
+			"action" : "Mod+d",
+			"description" : "Start an application."
+		},
+		{
+			"action" : "Mod+Shift+q",
+			"description" : "Kill a window."
+		}
+	],
+	"name" : "i3wm"
 }
-
