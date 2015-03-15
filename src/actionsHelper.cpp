@@ -141,6 +141,7 @@ bool ActionsHelper::addEntry(Entry newEntry) {
   }
 
   loadEntries(loadedAppPath);
+  createDb();
   return true;
 }
 
@@ -179,6 +180,7 @@ bool ActionsHelper::deleteEntry(std::string action) {
   }
 
   loadEntries(loadedAppPath);
+  createDb();
   return true;
   
 }
@@ -210,7 +212,7 @@ bool ActionsHelper::createDb() {
 }
 
 std::vector<std::string> ActionsHelper::makeSearch(std::string search, std::string measure, double threshold) {
-  std::cout << "Make search with mesure=" << measure << " and threshold=" <<threshold << std::endl;
+  // std::cout << "Make search with mesure=" << measure << " and threshold=" <<threshold << std::endl;
   // Open the database for reading.
   simstring::reader dbr;
   std::string fileName(loadedAppPath+"/database.db");

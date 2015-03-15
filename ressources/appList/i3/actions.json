@@ -36,6 +36,14 @@
 		{
 			"action" : "Mod+Shift+q",
 			"description" : "Kill a window."
+		},
+		{
+			"action" : "Mod+Shift+NUM",
+			"description" : "Move a window to workspace NUM."
+		},
+		{
+			"action" : "Mod+Shift+r",
+			"description" : "Restart i3."
 		}
 	],
 	"name" : "i3wm"
