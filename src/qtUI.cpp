@@ -25,7 +25,6 @@ QtUI::~QtUI() {
 }
 
 void QtUI::startUI() {
-
   view->connect(view->engine(), SIGNAL(quit()), SLOT(close()));
   view->setResizeMode(QQuickView::SizeRootObjectToView);
 

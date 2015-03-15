@@ -102,10 +102,15 @@ bool ActionsHelper::processCmd(std::string cmd) {
     newEntry.description = cmd.substr(first+1, second-first-1);
     return addEntry(newEntry);
   }
+  if (cmd.substr(0, 7) == "delete ") {
+    auto first = cmd.find_first_of("\"\'"); 
+    auto second = cmd.find_first_of("\"\'", first+1); 
+    return deleteEntry(cmd.substr(first+1, second-first-1));
+  }
   if (findAppFolder(loadedAppPath, cmd)) {
     return loadEntries(loadedAppPath);
   } else {
-    return NULL;
+    return false;
   }
 }
 
@@ -137,6 +142,45 @@ bool ActionsHelper::addEntry(Entry newEntry) {
 
   loadEntries(loadedAppPath);
   return true;
+}
+
+bool ActionsHelper::deleteEntry(std::string action) {
+  if (action.size() < 0) {
+    return false;
+  }
+  std::cout << "Try to delete an entry: " << action << std::endl;
+  std::string fileName = loadedAppPath + "/actions.json";
+  // Read previous content
+  Json::Value root;
+  Json::Reader reader;
+  std::ifstream stream(fileName.c_str(), std::ifstream::binary);
+  if (!reader.parse(stream, root, false)) {
+    std::cout << reader.getFormatedErrorMessages() << std::endl;
+    return false;
+  }
+  // Search for the action string
+  Json::Value::ArrayIndex index;
+  for (index=0; index<root["entries"].size(); ++index) {
+    Json::Value entry = root["entries"][index];
+    if (entry["action"].asString() == action) {
+      //found the correct entry
+      break;
+    }
+  }
+  Json::Value removedEntry;
+  if (root["entries"].removeIndex(index, &removedEntry)) {
+    std::cout << "Removed entry: " << action << std::endl;
+  }
+  // Rewrite file
+  std::ofstream file(fileName);
+  if (file.is_open()) {
+    file << root;
+    file.close();
+  }
+
+  loadEntries(loadedAppPath);
+  return true;
+  
 }
 
 bool ActionsHelper::hasDb() {

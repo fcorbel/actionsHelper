@@ -30,6 +30,7 @@ class ActionsHelper
     bool loadAppList();
     bool processCmd(std::string cmd);
     bool addEntry(Entry newEntry);
+    bool deleteEntry(std::string action);
     bool hasDb();
     bool createDb();
     std::vector<std::string> makeSearch(std::string search,std::string measure="cosine", double threshold=0.1);
