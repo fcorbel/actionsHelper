@@ -6,6 +6,7 @@
 #include <utility>
 #include <json/json.h>
 #include <simstring/simstring.h>
+#include <quark.h>
 
 typedef struct {
   std::string action;
@@ -22,6 +23,7 @@ class ActionsHelper
     std::string loadedAppPath;
     std::string loadedAppTitle;
     std::vector<Entry> loadedEntries;
+    quark descIndex;
 
   public:
     ActionsHelper(std::string appName="help");
@@ -33,7 +35,7 @@ class ActionsHelper
     bool deleteEntry(std::string action);
     bool hasDb();
     bool createDb();
-    std::vector<std::string> makeSearch(std::string search,std::string measure="cosine", double threshold=0.1);
+    std::vector<Entry> makeSearch(std::string search,std::string measure="cosine", double threshold=0.1);
 
     std::string getLoadedAppTitle();
     std::vector<Entry> getLoadedEntries();

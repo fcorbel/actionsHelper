@@ -81,10 +81,13 @@ bool QtUI::processCmd(const QString &cmd) {
 void QtUI::makeSearch(const QString &search, const QString &measure, const double &threshold) {
   auto result = logic_.makeSearch(search.toStdString(), measure.toStdString(), threshold);
   if (result.size() > 0) {
-    std::cout << "[" << std::endl;
-    for (int i = 0;i < (int)result.size();++i) {
-        std::cout << result[i] << std::endl;
-    }
-    std::cout << "]" << std::endl;
+    loadEntries(result);
+    // std::cout << "[" << std::endl;
+    // for (int i = 0;i < (int)result.size();++i) {
+    //     std::cout << result[i].action << ": " << result[i].description << std::endl;
+    // }
+    // std::cout << "]" << std::endl;
+  } else {
+    loadEntries(logic_.getLoadedEntries());
   }
 }

@@ -7,12 +7,12 @@
 #include <algorithm>
 #include <iterator>
 
-
 ActionsHelper::ActionsHelper(std::string appName): 
   AppListPath("../ressources/appList"),
   loadedAppPath(""),
   loadedAppTitle(""),
-  loadedEntries()
+  loadedEntries(),
+  descIndex()
 {
   if (findAppFolder(loadedAppPath, appName)) {
     loadEntries(loadedAppPath);
@@ -40,8 +40,13 @@ bool ActionsHelper::loadEntries(const std::string appPath) {
     newEntries.push_back(entry);
   }
   loadedEntries = newEntries;
-  if (!hasDb()) {
+  // if (!hasDb()) {
     createDb();
+  // }
+  //Associate each description with an id
+  descIndex = quark();
+  for (auto it=loadedEntries.begin(); it != loadedEntries.end(); ++it) {
+    descIndex[(*it).description];
   }
   return true;
 }
@@ -211,14 +216,14 @@ bool ActionsHelper::createDb() {
   return true;
 }
 
-std::vector<std::string> ActionsHelper::makeSearch(std::string search, std::string measure, double threshold) {
+std::vector<Entry> ActionsHelper::makeSearch(std::string search, std::string measure, double threshold) {
   // std::cout << "Make search with mesure=" << measure << " and threshold=" <<threshold << std::endl;
   // Open the database for reading.
   simstring::reader dbr;
   std::string fileName(loadedAppPath+"/database.db");
   if (!dbr.open(fileName)) {
     std::cerr << "Could not open file";
-    return std::vector<std::string>();
+    return std::vector<Entry>();
   }
   int measureStruct;
   if (measure == "cosine") {
@@ -233,12 +238,21 @@ std::vector<std::string> ActionsHelper::makeSearch(std::string search, std::stri
     measureStruct = simstring::overlap;
   } else {
     std::cerr << "Unknown measure";
-    return std::vector<std::string>();
+    return std::vector<Entry>();
   }
   std::vector<std::string> result;
   dbr.retrieve(search, measureStruct, threshold, std::back_inserter(result));
-  // dbr.retrieve(search, simstring::cosine, 1, std::back_inserter(result));
-  return result;
+  // Get entries from descriptions
+  std::vector<Entry> resultEntries;
+  for (auto it=result.begin(); it != result.end(); ++it) {
+    int id = descIndex.from_string(*it);
+    // std::cout << id << " = " << *it << "\n";
+    if (id == 0) {
+      std::cerr << "A string in the database not found in the description index.";
+    }
+    resultEntries.push_back(loadedEntries[id-1]);
+  }
+  return resultEntries;
 }
 
 std::string ActionsHelper::getLoadedAppTitle() {

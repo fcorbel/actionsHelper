@@ -24,6 +24,10 @@
 		{
 			"description" : "Delete an entry in the current application.",
 			"action" : "/delete \"action\""
+		},
+		{
+			"description" : "Reload the database for the current application.",
+			"action" : "/reload"
 		}
 	],
 	"name" : "Help"
