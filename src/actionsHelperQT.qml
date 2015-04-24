@@ -23,9 +23,18 @@ Item {
       Layout.fillWidth: true
       Layout.preferredHeight: 40
       focus: true
+      Keys.onUpPressed: {
+        if (list.currentIndex > 0) {
+          list.currentIndex -= 1
+        }
+      }
+      Keys.onDownPressed: {
+        if (list.currentIndex < list.count - 1) {
+          list.currentIndex += 1
+        }
+      }
       onTextChanged: {
         if (text[0] !== "/") {
-          // console.log("Make fuzzy search")
           qtCpp.makeSearch(text, "cosine", 0.1)
         }
       }
@@ -71,7 +80,6 @@ Item {
     Component {
       id: myHighlight
       Rectangle {
-        /*width: parent.width*/
         height: 40
         color: "steelblue"; radius: 1
         opacity: 0.5
