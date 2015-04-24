@@ -42,18 +42,16 @@ Item {
     }
 
     Component {
-      id: highlight
-      Rectangle {
-        width: 180; height: 40
-        color: "red"; radius: 5
-      }
-    }
-    Component {
-      id: delegate
+      id: myDelegate
       Item {
         width: list.width
         height: 60
-        /*color: "green"*/
+        Rectangle {
+          id: backgroundS
+          width: parent.width
+          height: parent.height
+          color: "#eee"; radius: 5
+        }
         Text {
           id: actionText
           text: action
@@ -70,6 +68,16 @@ Item {
         }
       }
     }
+    Component {
+      id: myHighlight
+      Rectangle {
+        /*width: parent.width*/
+        height: 40
+        color: "steelblue"; radius: 1
+        opacity: 0.5
+        z: myDelegate.z +1
+      }
+    }
     ScrollView {
       Layout.fillWidth: true
       Layout.fillHeight: true
@@ -80,10 +88,10 @@ Item {
           spacing: 5
           anchors.fill: parent
           model: entriesModel
-          delegate: delegate
-          highlight: highlight
+          delegate: myDelegate
+          highlight: myHighlight
           focus: true
-          /*currentIndex: 1*/
+          /*currentIndex: 3*/
       }
     }
   }
