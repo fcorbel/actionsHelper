@@ -1,0 +1,9 @@
+{
+  "name": "Ranger",
+  "entries": [
+    {
+      "action": "r",
+      "description": "Open file with an application."
+    }
+  ] 
+}
