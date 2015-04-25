@@ -34,6 +34,10 @@ Item {
         }
       }
       onTextChanged: {
+        // No other simple way to implement application wide shortcut (without a menu/button)
+        if ((text[length-1] === "q") && (event.modifiers === Qt.ControlModifier)) {
+          console.log("Q")
+        }
         if (text[0] !== "/") {
           qtCpp.makeSearch(text, "cosine", 0.1)
         }
@@ -59,11 +63,12 @@ Item {
           id: backgroundS
           width: parent.width
           height: parent.height
-          color: "#eee"; radius: 5
+          color: "#444"; radius: 5
         }
         Text {
           id: actionText
           text: action
+          color: "steelblue"
           font.weight: Font.Bold
           font.pixelSize: 20
         }
@@ -73,6 +78,7 @@ Item {
           anchors.leftMargin: 60
           width: parent.width - anchors.leftMargin
           text: description
+          color: "white"
           wrapMode: Text.WordWrap
         }
       }
@@ -81,7 +87,7 @@ Item {
       id: myHighlight
       Rectangle {
         height: 40
-        color: "steelblue"; radius: 1
+        color: "#ccc"; radius: 1
         opacity: 0.5
         z: myDelegate.z +1
       }
