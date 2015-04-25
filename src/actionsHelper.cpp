@@ -76,7 +76,7 @@ bool ActionsHelper::loadAppList() {
   while ((ent = readdir(dir)) != NULL) {
     char* name = ent->d_name;
     std::cout << name << std::endl;
-    if ((strcmp(name, ".") != 0) && (strcmp(name, "..") != 0) && (name[0] != '.')) {
+    if ((strcmp(name, ".") != 0) && (strcmp(name, "..") != 0) && (name[0] != '.') && (strcmp(name, "database.db") != 0)) {
       Entry entry;
       entry.action = name;
       entry.description = "";
