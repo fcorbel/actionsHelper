@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.1
 
 
 Item {
+  height: 600
+  width: 400
   MouseArea {
       anchors.fill: parent
       onClicked: {
