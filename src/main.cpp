@@ -1,17 +1,31 @@
 #include <actionsHelper.h>
-#include <ncursesUI.h>
-#include <qtUI.h>
 
+#if defined(USE_NCURSES)
+  #include <ncursesUI.h>
+#endif
+#if defined(USE_QT)
+  #include <qtUI.h>
+#endif
+
+#include <unistd.h>
+#include <stdio.h>
 
 int main(int argc, char* argv[]) {
 
-  // NcursesUI ui;
-  // QtUI ui(argc, argv);
-  // ShortcutsHelper helper(&ui);
-
   ActionsHelper helper;
-  QtUI ui(helper, argc, argv);
-  ui.startUI();
+  ActionsHelperUI* ui = nullptr;
+  if (isatty(fileno(stdin))) {
+    puts("Launched from a terminal.");
+    // ui = new NcursesUI(helper, argc, argv);
+  } else {
+    puts("Launched from GUI.");
+    ui = new QtUI(helper, argc, argv);
+  }
+
+  if (ui) {
+    ui->startUI();
+    delete ui;
+  }
 
   return 0;
 }

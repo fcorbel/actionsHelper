@@ -23,11 +23,19 @@ ELSE (${Qt5_FOUND})
   MESSAGE(STATUS "Build without Qt.")
 ENDIF (${Qt5_FOUND})
 
-IF (NOT withQt AND NOT withNCURSES)
+IF (NOT withQT AND NOT withNCURSES)
   MESSAGE(FATAL_ERROR "Can not build without any gui library.")
-ENDIF (NOT withQt AND NOT withNCURSES)
+ENDIF (NOT withQT AND NOT withNCURSES)
 
-
+########################
+# Preprocessor variables
+########################
+IF (${withNCURSES})
+  ADD_DEFINITIONS(-DUSE_NCURSES)
+ENDIF (${withNCURSES})
+IF (${withQT})
+  ADD_DEFINITIONS(-DUSE_QT)
+ENDIF (${withQT})
 
 
 SET(progSRCS main.cpp jsoncpp.cpp actionsHelper.cpp)

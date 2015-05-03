@@ -37,9 +37,9 @@ Item {
       }
       onTextChanged: {
         // No other simple way to implement application wide shortcut (without a menu/button)
-        if ((text[length-1] === "q") && (event.modifiers === Qt.ControlModifier)) {
-          console.log("Q")
-        }
+        /*if ((text[length-1] === "q") && (event.modifiers === Qt.ControlModifier)) {*/
+        /*  console.log("Q")*/
+        /*}*/
         if (text[0] !== "/") {
           qtCpp.makeSearch(text, "cosine", 0.1)
         }
