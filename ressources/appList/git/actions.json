@@ -1,0 +1,66 @@
+{
+  "name": "Git",
+  "entries": [
+    {
+      "action": "git init",
+      "description": "Initialize the current directory as a new Git repository."
+    },
+    {
+      "action": "git clone [url]",
+      "description": "Copy a Git repository."
+    },
+    {
+      "action": "git status",
+      "description": "Show a summary of which files have changed since the last commit."
+    },
+    {
+      "action": "git add [path]",
+      "description": "Add files in the path for the next commit."
+    },
+    {
+      "action": "git reset [file]",
+      "description": "Undo the 'add' command, remove file from the current index."
+    },
+    {
+      "action": "git commit",
+      "description": "Commit previously staged changes."
+    },
+    {
+      "action": "git commit --amend",
+      "description": "Change last commit message."
+    },
+    {
+      "action": "git log",
+      "description": "Show all commits."
+    },
+    {
+      "action": "git branch -av",
+      "description": "List all existing branches."
+    },
+    {
+      "action": "git branch [branchname]",
+      "description": "Create a new branch."
+    },
+    {
+      "action": "git checkout [branchname]",
+      "description": "Switch to another branch."
+    },
+    {
+      "action": "git remote add [alias] [url]",
+      "description": "Add a new remote repository for the project."
+    },
+    {
+      "action": "git fetch [alias]",
+      "description": "Download new branches and data from a remote repository. Origin is the default."
+    },
+    {
+      "action": "git pull",
+      "description": "Runs 'git fetch' followed by 'git merge'. "
+    },
+    {
+      "action": "git push",
+      "description": "Push commits to a remote repository."
+    }
+  ] 
+
+}
