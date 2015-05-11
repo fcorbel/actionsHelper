@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
   if (isatty(fileno(stdin))) {
     puts("Launched from a terminal.");
     // ui = new NcursesUI(helper, argc, argv);
+    ui = new QtUI(helper, argc, argv);
   } else {
     puts("Launched from GUI.");
     ui = new QtUI(helper, argc, argv);
