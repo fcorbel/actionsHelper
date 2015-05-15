@@ -24,7 +24,7 @@ class NcursesUI: public ActionsHelperUI
     void drawUI();
     void showTitle(std::string title);
     void loadEntries(const std::vector<Entry> entries);
-    // void showEntries(const Json::Value entries);
+    void makeSearch(const std::string &search, const std::string &measure, const double &threshold);
     void updateInput();
 
 };

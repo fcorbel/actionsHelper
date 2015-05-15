@@ -52,11 +52,8 @@ void NcursesUI::startUI() {
           if (currentCmd.empty() && cmdMode) {
             cmdMode = false;
           } else {
-            auto result = logic_.makeSearch(currentCmd, "cosine", 0.1);
-            if (result.size() > 0) {
-              loadEntries(result);
-            } else {
-              loadEntries(logic_.getLoadedEntries());
+            if (!cmdMode) {
+              makeSearch(currentCmd, "cosine", 0.1);
             }
           }
         }
@@ -80,11 +77,8 @@ void NcursesUI::startUI() {
         break;
       default:
         currentCmd += ch;
-        auto result = logic_.makeSearch(currentCmd, "cosine", 0.1);
-        if (result.size() > 0) {
-          loadEntries(result);
-        } else {
-          loadEntries(logic_.getLoadedEntries());
+        if (!cmdMode) {
+          makeSearch(currentCmd, "cosine", 0.1);
         }
         break;
     }
@@ -162,3 +156,13 @@ void NcursesUI::loadEntries(const std::vector<Entry> entries) {
   }
   wrefresh(listWin);
 }
+
+void NcursesUI::makeSearch(const std::string &search, const std::string &measure, const double &threshold) {
+  auto result = logic_.makeSearch(search, measure, threshold);
+  if (result.size() > 0) {
+    loadEntries(result);
+  } else {
+    loadEntries(logic_.getLoadedEntries());
+  }
+}
+
