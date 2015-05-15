@@ -51,6 +51,13 @@ void NcursesUI::startUI() {
           currentCmd.pop_back();
           if (currentCmd.empty() && cmdMode) {
             cmdMode = false;
+          } else {
+            auto result = logic_.makeSearch(currentCmd, "cosine", 0.1);
+            if (result.size() > 0) {
+              loadEntries(result);
+            } else {
+              loadEntries(logic_.getLoadedEntries());
+            }
           }
         }
         break;
@@ -70,11 +77,15 @@ void NcursesUI::startUI() {
         drawUI();
         loadEntries(logic_.getLoadedEntries());
         showTitle(logic_.getLoadedAppTitle());
-        // showTitle(logic_->currentShortcuts.name);
-        // showEntries(logic_->currentShortcuts.entries);
         break;
       default:
         currentCmd += ch;
+        auto result = logic_.makeSearch(currentCmd, "cosine", 0.1);
+        if (result.size() > 0) {
+          loadEntries(result);
+        } else {
+          loadEntries(logic_.getLoadedEntries());
+        }
         break;
     }
     updateInput();
