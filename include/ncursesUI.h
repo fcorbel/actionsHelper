@@ -4,7 +4,6 @@
 #include <actionsHelperUI.h>
 #include <string>
 #include <ncurses.h>
-#include <json/json.h>
 
 class NcursesUI: public ActionsHelperUI
 {
@@ -18,12 +17,14 @@ class NcursesUI: public ActionsHelperUI
     WINDOW* listWinBorder;
 
   public:
-    NcursesUI(ActionsHelper &logic);
+    NcursesUI(ActionsHelper &logic, int &argc, char* argv[]);
+    ~NcursesUI();
     void startUI();
     void stopUI();
     void drawUI();
     void showTitle(std::string title);
-    void showEntries(const Json::Value entries);
+    void loadEntries(const std::vector<Entry> entries);
+    // void showEntries(const Json::Value entries);
     void updateInput();
 
 };

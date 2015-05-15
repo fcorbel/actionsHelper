@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
   ActionsHelperUI* ui = nullptr;
   if (isatty(fileno(stdin))) {
     puts("Launched from a terminal.");
-    // ui = new NcursesUI(helper, argc, argv);
-    ui = new QtUI(helper, argc, argv);
+    ui = new NcursesUI(helper, argc, argv);
+    // ui = new QtUI(helper, argc, argv);
   } else {
     puts("Launched from GUI.");
     ui = new QtUI(helper, argc, argv);

@@ -1,12 +1,14 @@
 #include <ncursesUI.h>
-#include <actionsHelper.h>
-
 #include <iostream>
-NcursesUI::NcursesUI(ActionsHelper &logic):
+
+NcursesUI::NcursesUI(ActionsHelper &logic, int &argc, char* argv[]):
   ActionsHelperUI(logic),
   stop(false),
   inputHeight(3)
 {
+}
+
+NcursesUI::~NcursesUI() {
 }
 
 void NcursesUI::startUI() {
@@ -18,8 +20,8 @@ void NcursesUI::startUI() {
   keypad(stdscr, true); // Enable arrows, F1, etc.
 
   drawUI();
-  // showTitle(logic_->currentShortcuts.name);
-  // showEntries(logic_->currentShortcuts.entries);
+  loadEntries(logic_.getLoadedEntries());
+  showTitle(logic_.getLoadedAppTitle());
 
   move(1, 11);
   while (!stop) {
@@ -33,7 +35,15 @@ void NcursesUI::startUI() {
         break;
       case '\n':
         if (cmdMode) {
-          // logic_.processCmd(currentCmd);
+          if (currentCmd == "/quit") {
+            stopUI();
+          }
+          if (logic_.processCmd(currentCmd)) {
+            loadEntries(logic_.getLoadedEntries());
+            showTitle(logic_.getLoadedAppTitle());
+            currentCmd = "";
+            updateInput();
+          }
         }
         break;
       case KEY_BACKSPACE:
@@ -124,19 +134,18 @@ void NcursesUI::showTitle(std::string title) {
   wrefresh(titleWin);
 }
 
-void NcursesUI::showEntries(Json::Value entries)
-{
+void NcursesUI::loadEntries(const std::vector<Entry> entries) {
   //clean window
   wclear(listWin);
-  if (entries.empty()) {
-    return;
-  }
-  for (unsigned i=0; i<entries.size(); ++i) {
-    Json::Value entry = entries[i];
+  int i = 0;
+  for (auto it=entries.begin(); it != entries.end(); ++it) {
+    Entry entry = *it;
     wattron(listWin, A_BOLD);
-    mvwprintw(listWin, 0+i*3, 1, "%s", entry.get("shortcut", "").asCString());
+    mvwprintw(listWin, 0+i*3, 1, "%s", entry.action.c_str());
     wattroff(listWin, A_BOLD);
-    mvwprintw(listWin, 1+i*3, 10, "%s", entry.get("content", "").asCString());
+    mvwprintw(listWin, 1+i*3, 10, "%s", entry.description.c_str());
+    // dataList.append(new DataObject(QString::fromStdString(entry.action), QString::fromStdString(entry.description)));
+    i++;
   }
   wrefresh(listWin);
 }
