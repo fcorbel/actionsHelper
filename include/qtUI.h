@@ -3,7 +3,6 @@
 
 #include <actionsHelperUI.h>
 #include <string>
-#include <json/json.h>
 #include <QApplication>
 #include <QObject>
 
@@ -22,7 +21,7 @@ class QtUI:  public QObject, public ActionsHelperUI
     QtUI(ActionsHelper &logic, int &argc,char* argv[]);
     ~QtUI();
     void startUI();
-    void startUI(int &argc,char* argv[]);
+    // void startUI(int &argc,char* argv[]);
     void stopUI();
     void showTitle(std::string title);
     void loadEntries(const std::vector<Entry> entries);
