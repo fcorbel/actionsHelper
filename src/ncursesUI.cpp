@@ -68,6 +68,8 @@ void NcursesUI::startUI() {
       case KEY_RESIZE:
         clear();
         drawUI();
+        loadEntries(logic_.getLoadedEntries());
+        showTitle(logic_.getLoadedAppTitle());
         // showTitle(logic_->currentShortcuts.name);
         // showEntries(logic_->currentShortcuts.entries);
         break;
