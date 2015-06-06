@@ -11,13 +11,23 @@
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
+  // Manage options
+  bool useQt = false;
+  if (argc > 1) {
+    if (strcmp(argv[1], "qt") == 0) {
+      useQt = true;
+    }
+  }
 
   ActionsHelper helper;
   ActionsHelperUI* ui = nullptr;
   if (isatty(fileno(stdin))) {
     puts("Launched from a terminal.");
-    ui = new NcursesUI(helper, argc, argv);
-    // ui = new QtUI(helper, argc, argv);
+    if (useQt) {
+      ui = new QtUI(helper, argc, argv);
+    } else {
+      ui = new NcursesUI(helper, argc, argv);
+    }
   } else {
     puts("Launched from GUI.");
     ui = new QtUI(helper, argc, argv);
