@@ -40,6 +40,14 @@
     {
       "action": "ctrl-v",
       "description": "Open file in new horizontal buffer in ctrlp."
+    },
+    {
+      "action": "\"*p",
+      "description": "Paste from selection clipboard."
+    },
+    {
+      "action": "\"+p",
+      "description": "Paste from usual clipboard, ctrl+C."
     }
 
   ] 
