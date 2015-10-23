@@ -15,4 +15,8 @@ Installation
   - Type "cmake .." from bin folder
   - make
 
+Screenshots
 
+![Qt interface](qt_gui.png?raw=true "Qt interface")
+
+![Ncurses interface](ncurses_gui.png?raw=true "Ncurses interface")
