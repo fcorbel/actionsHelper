@@ -1,0 +1,11 @@
+{
+	"entries" : 
+	[
+		{
+			"action" : "find / -name 'file.name'",
+			"description" : "Search for a file from the root."
+		}
+	
+	],
+	"name" : "linux"
+}
