@@ -48,8 +48,19 @@
     {
       "action": "\"+p",
       "description": "Paste from usual clipboard, ctrl+C."
+    },
+    {
+      "action": "D",
+      "description": "Delete from cursor to the end of line."
+    },
+    {
+      "action": "d$",
+      "description": "Delete from cursor to the end of line."
+    },
+    {
+      "action": "dw",
+      "description": "Delete from cursor to the beginning of the next word."
     }
-
   ] 
 
 }
